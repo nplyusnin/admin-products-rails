@@ -1,0 +1,37 @@
+<% content_for :title, "Products" %>
+
+<h1>Products</h1>
+
+<% if @products.size > 0 %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td><%= product.title %></td>
+          <td><%= product.price %></td>
+          <td>
+            <%= link_to "Edit", edit_product_path(product), class: "btn btn-sm btn-warning" %>
+            <%= link_to "Destroy", product, 
+                                   method: :delete, 
+                                   data: { confirm: "Are you sure?" },
+                                   class: "btn btn-sm btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div>
+    <b>Товары пока не добавлены.</b>
+  </div>
+<% end %>
+
+<%= link_to "New Product", new_product_path, class: "btn btn-success" %>
