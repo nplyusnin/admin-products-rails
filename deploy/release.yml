@@ -1,0 +1,63 @@
+- hosts: server
+  gather_facts: no
+  become: false
+
+  tasks:
+    - name: pull app repository
+      git:
+        repo: git@github.com:nplyusnin/admin-products-rails.git
+        dest: /apps/admin-products-rails
+        update: yes
+        force: yes
+        accept_hostkey: yes
+
+    - name: remove old docker image if exists
+      docker_image:
+        name: admin-products-rails-production
+        state: absent
+        force_absent: yes
+    
+    - name: build new docker image
+      docker_image:
+        name: admin-products-rails-production
+        source: build
+        force_source: yes
+        build:
+          path: /apps/admin-products-rails
+          dockerfile: /apps/admin-products-rails/.docker/Dockerfile.production
+
+    - name: run database migrations
+      docker_container:
+        name: admin-products-rails-production-migrations
+        image: admin-products-rails-production
+        command: bundle exec rails db:migrate
+        state: started
+        restart_policy: no
+        network_mode: host
+        env:
+          RAILS_ENV: production
+    
+    - name: remove migration container
+      docker_container:
+        name: admin-products-rails-production-migrations
+        state: absent
+        force_kill: yes
+
+    - name: remove old docker container
+      docker_container:
+        name: admin-products-rails-production
+        state: absent
+        force_kill: yes
+
+    - name: run new docker container
+      docker_container:
+        name: admin-products-rails-production
+        image: admin-products-rails-production
+        state: started
+        restart_policy: always
+        ports:
+          - "3001:3000"
+        env:
+          RAILS_ENV: production
+        volumes:
+          - /apps/admin-products-rails/storage:/usr/src/app/storage

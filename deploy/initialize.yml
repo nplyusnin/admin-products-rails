@@ -1,0 +1,10 @@
+- hosts: server
+  gather_facts: no
+  become: false
+
+  tasks:
+    - name: clone app repository
+      git:
+        repo: git@github.com:nplyusnin/admin-products-rails.git
+        dest: /apps/admin-products-rails
+        accept_hostkey: yes
