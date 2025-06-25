@@ -1,6 +1,13 @@
 <div class="card mt-4 nested-fields">
   <div class="card-body">
-    <%= property_list.input :title, label: "Property Name" %>
+    <div class="row">
+      <div class="col-md-8">
+        <%= property_list.input :title, label: "Property Name" %>
+      </div>
+      <div class="col-md-4">
+        <%= property_list.input :position %>
+      </div>
+    </div>
 
     <div data-controller="nested-fields" data-nested-fields-child-index-value="NEW_PROPERTY">
       <template  data-nested-fields-target="template">
