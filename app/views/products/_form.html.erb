@@ -3,14 +3,41 @@
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
-  <div class="form-inputs">
-    <%= f.input :title %>
-    <%= f.input :description %>
-    <%= f.input :price %>
-    <%= f.input :old_price %>
+  <div class="card">
+    <div class="card-header">
+      Primary Information
+    </div>
+    <div class="card-body">
+      <%= f.input :title %>
+      <%= f.input :description %>
+      <%= f.input :price %>
+      <%= f.input :old_price %>
+    </div>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <h2 class="mt-4">Properties</h2>
+
+  <div data-controller="nested-fields">
+    <template data-nested-fields-target="template">
+      <%= f.simple_fields_for :property_lists, PropertyList.new, child_index: "NEW_RECORD" do |property_list| %>
+        <%= render "property_list_form", property_list: %>
+      <% end %>
+    </template>
+
+    <div data-nested-fields-target="container">
+      <%= f.simple_fields_for :property_lists do |property_list| %>
+        <%= render "property_list_form", property_list: %>
+      <% end %>
+    </div>
+
+    <div class="mt-4">
+      <button class="btn btn-secondary" data-action="nested-fields#add" type="button">
+        Add Property List
+      </button>
+    </div>
+  </div>
+
+  <div class="form-actions mt-4">
+    <%= f.button :submit, class: "btn btn-primary" %>
   </div>
 <% end %>

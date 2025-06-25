@@ -1,0 +1,9 @@
+<div class="card mt-4 nested-fields">
+  <div class="card-body">
+    <%= property_list.input :title, label: "Property Name" %>
+
+    <button class="btn btn-danger" data-action="nested-fields#remove">Destroy</button>
+
+    <%= property_list.input :_destroy, as: :hidden %>
+  </div>
+</div>
