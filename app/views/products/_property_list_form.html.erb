@@ -2,9 +2,9 @@
   <div class="card-body">
     <%= property_list.input :title, label: "Property Name" %>
 
-    <div data-controller="nested-fields">
+    <div data-controller="nested-fields" data-nested-fields-child-index-value="NEW_PROPERTY">
       <template  data-nested-fields-target="template">
-        <%= property_list.simple_fields_for :properties, Property.new, child_index: "NEW_RECORD" do |property| %>
+        <%= property_list.simple_fields_for :properties, Property.new, child_index: "NEW_PROPERTY" do |property| %>
           <%= render "property_form", property: property %>
         <% end %>
       </template>

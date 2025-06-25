@@ -17,9 +17,9 @@
 
   <h2 class="mt-4">Properties</h2>
 
-  <div data-controller="nested-fields">
+  <div data-controller="nested-fields" data-nested-fields-child-index-value="NEW_PROPERTY_LIST">
     <template data-nested-fields-target="template">
-      <%= f.simple_fields_for :property_lists, PropertyList.new, child_index: "NEW_RECORD" do |property_list| %>
+      <%= f.simple_fields_for :property_lists, PropertyList.new, child_index: "NEW_PROPERTY_LIST" do |property_list| %>
         <%= render "property_list_form", property_list: %>
       <% end %>
     </template>
