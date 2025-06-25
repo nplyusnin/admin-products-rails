@@ -1,6 +1,27 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @product %>
+<h1><%= @product.title %></h1>
+
+<div>
+  <%= @product.description %>
+</div>
+
+<div>
+  <ul>
+    <li><strong>Price</strong>: <%= @product.price %></li>
+    <li><strong>Old Price</strong>: <%= @product.old_price %></li>
+  </ul>
+</div>
+
+<% @product.property_lists.each do |property_list| %>
+  <h2><%= property_list.title %></h2>
+
+  <ul>
+    <% property_list.properties.each do |property| %>
+      <li><strong><%= property.title %>:</strong> <%= property.value %></li>
+    <% end %>
+  </ul>
+<% end %>
 
 <div>
   <%= link_to "Edit this product", edit_product_path(@product) %> |
