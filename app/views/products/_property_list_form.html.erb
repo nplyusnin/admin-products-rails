@@ -2,7 +2,26 @@
   <div class="card-body">
     <%= property_list.input :title, label: "Property Name" %>
 
-    <button class="btn btn-danger" data-action="nested-fields#remove">Destroy</button>
+    <div data-controller="nested-fields">
+      <template  data-nested-fields-target="template">
+        <%= property_list.simple_fields_for :properties, Property.new, child_index: "NEW_RECORD" do |property| %>
+          <%= render "property_form", property: property %>
+        <% end %>
+      </template>
+      <div data-nested-fields-target="container">
+        <%= property_list.simple_fields_for :properties do |property| %>
+          <%= render "property_form", property: %>
+        <% end %>
+      </div>
+
+      <button class="btn btn-secondary" data-action="nested-fields#add" type="button">
+        Add Property
+      </button>
+    </div>
+
+    <div class="mt-4">
+      <button class="btn btn-danger" data-action="nested-fields#remove">Destroy</button>
+    </div>
 
     <%= property_list.input :_destroy, as: :hidden %>
   </div>

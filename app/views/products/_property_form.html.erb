@@ -1,0 +1,16 @@
+<div class="nested-fields">
+  <div class="row">
+    <%= property.input :_destroy, as: :hidden %>
+    <div class="col-md-6">
+      <%= property.input :title %>
+    </div>
+    <div class="col-md-6">
+      <%= property.input :value %>
+    </div>
+    <div class="col-md-12 mb-4">
+      <button class="btn btn-danger" data-action="nested-fields#remove" type="button">
+        Destroy
+      </button>
+    </div>
+  </div>
+</div>
