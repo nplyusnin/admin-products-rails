@@ -17,7 +17,7 @@ module Api
 
     # POST /products
     def create
-      @product = Product.new(product_params)
+      @product = Product.new(mapped_product_params)
       if @product.save
         render json: {}, status: :created
       else
@@ -27,7 +27,7 @@ module Api
 
     # PATCH/PUT /products/:id
     def update
-      if @product.update(product_params)
+      if @product.update(mapped_product_params)
         render json: {}, status: :ok
       else
         render json: @product.errors, status: :unprocessable_entity
@@ -46,8 +46,41 @@ module Api
       @product = Product.find(params[:id])
     end
 
+    PROPERTIES_PARAMS = [
+      [
+        :id,
+        :title,
+        :value,
+        :position,
+        :_destroy
+      ]
+    ]
+
+    PROPERTY_LISTS_PARAMS = [
+      [
+        :id,
+        :title,
+        :position,
+        :_destroy,
+        properties: PROPERTIES_PARAMS
+      ]
+    ]
+
     def product_params
-      params.expect(product: [ :title, :description, :price, :old_price, property_lists_attributes: [ [ :id, :title, :position, :_destroy, properties_attributes: [ [ :id, :title, :value, :position, :_destroy ] ] ] ] ])
+      @product_params ||= params.expect(product: [ :title, :description, :price, :old_price, property_lists: PROPERTY_LISTS_PARAMS ])
+    end
+
+    def mapped_product_params
+      result = product_params.except(:property_lists)
+
+      result[:property_lists_attributes] = product_params[:property_lists]&.map do |property_list|
+        {
+          **property_list.except(:properties),
+          properties_attributes: property_list[:properties] || []
+        }
+      end || []
+
+      result
     end
   end
 end
