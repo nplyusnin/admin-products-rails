@@ -13,7 +13,7 @@ module Api
         description: product.description,
         price: product.price,
         old_price: product.old_price,
-        properties: properties,
+        property_lists: property_lists,
         created_at: product.created_at,
         updated_at: product.updated_at
       }
@@ -21,7 +21,7 @@ module Api
 
     private
 
-    def properties
+    def property_lists
       product.property_lists.map do |property_list|
         {
           id: property_list.id,
